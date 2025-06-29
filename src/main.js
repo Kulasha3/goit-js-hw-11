@@ -1,4 +1,4 @@
-import { searchImg } from './js/pixabay-api';
+import { getImagesByQuery } from './js/pixabay-api';
 import { checkUp, noMatch } from './js/render-functions';
 import { imgRender } from './js/render-functions';
 import { gallery } from './js/render-functions';
@@ -23,7 +23,7 @@ function onFormSubmit(e) {
     checkUp();
     return;
   }
-  searchImg(search)
+  getImagesByQuery(search)
     .then(data => {
       if (data.hits.length === 0) {
         noMatch();
