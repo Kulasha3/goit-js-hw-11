@@ -5,7 +5,7 @@ import { gallery } from './js/render-functions';
 import { errNotify } from './js/render-functions';
 
 export const refs = {
-  formEl: document.querySelector('.search-form'),
+  formEl: document.querySelector('.form'),
   galleryEl: document.querySelector('.gallery'),
   loader: document.querySelector('.loader'),
 };
