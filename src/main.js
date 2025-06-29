@@ -16,26 +16,32 @@ refs.formEl.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
   e.preventDefault();
+  
   const search = e.target.elements.text.value.trim();
-  refs.loader.style.display = 'block';
-
+  
   if (!search) {
     checkUp();
     return;
   }
+  
+  refs.loader.style.display = 'block';
+  refs.galleryEl.innerHTML = '';
+  
   getImagesByQuery(search)
     .then(data => {
       if (data.hits.length === 0) {
         noMatch();
-        refs.galleryEl.innerHTML = '';
       } else {
         imgRender(data);
         gallery.on('show.simplelightbox');
         gallery.refresh();
       }
       refs.loader.style.display = 'none';
+      e.target.reset();
     })
-    .catch(err => errNotify(err));
-
-  e.target.reset();
+    .catch(err => {
+      errNotify(err);
+      refs.loader.style.display = 'none';
+      e.target.reset();
+    });
 }
