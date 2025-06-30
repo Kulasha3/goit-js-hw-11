@@ -1,33 +1,30 @@
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { refs } from '../main';
 
-export function checkUp() {
-  iziToast.warning({
-    title: 'Caution',
-    message: 'Please type something to search!',
-    position: 'topRight',
-  });
+const refs = {
+  galleryEl: document.querySelector('.gallery'),
+  loader: document.querySelector('.loader'),
+};
+
+// Initialize loader as hidden
+refs.loader.style.display = 'none';
+
+export let gallery = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
+
+export function showLoader() {
+  refs.loader.style.display = 'block';
 }
 
-
-export function noMatch() {
-  iziToast.warning({
-    title: 'Caution',
-    message:
-      'Sorry, there are no images matching your search query. Please try again!',
-    position: 'topRight',
-  });
+export function hideLoader() {
+  refs.loader.style.display = 'none';
 }
 
-export function errNotify(err) {
-  iziToast.warning({
-    title: 'Caution',
-    message: `Error: ${err}`,
-    position: 'topRight',
-  });
+export function clearGallery() {
+  refs.galleryEl.innerHTML = '';
 }
 
 export function imgTemplate(data) {
@@ -66,10 +63,5 @@ export function imgTemplate(data) {
 export function imgRender(data) {
   const markup = imgTemplate(data);
   refs.galleryEl.innerHTML = markup;
+  gallery.refresh();
 }
-
-export let gallery = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionPosition: 'bottom',
-  captionDelay: 250,
-});

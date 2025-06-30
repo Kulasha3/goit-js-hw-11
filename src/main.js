@@ -1,16 +1,12 @@
 import { getImagesByQuery } from './js/pixabay-api';
-import { checkUp, noMatch } from './js/render-functions';
-import { imgRender } from './js/render-functions';
-import { gallery } from './js/render-functions';
-import { errNotify } from './js/render-functions';
+import { imgRender, showLoader, hideLoader, clearGallery } from './js/render-functions';
+import { checkUp, noMatch, errNotify } from './js/notifications';
 
-export const refs = {
+const refs = {
   formEl: document.querySelector('.form'),
-  galleryEl: document.querySelector('.gallery'),
-  loader: document.querySelector('.loader'),
 };
 
-refs.loader.style.display = 'none';
+hideLoader();
 
 refs.formEl.addEventListener('submit', onFormSubmit);
 
@@ -24,8 +20,8 @@ function onFormSubmit(e) {
     return;
   }
   
-  refs.loader.style.display = 'block';
-  refs.galleryEl.innerHTML = '';
+  showLoader();
+  clearGallery();
   
   getImagesByQuery(search)
     .then(data => {
@@ -33,15 +29,13 @@ function onFormSubmit(e) {
         noMatch();
       } else {
         imgRender(data);
-        gallery.on('show.simplelightbox');
-        gallery.refresh();
       }
-      refs.loader.style.display = 'none';
+      hideLoader();
       e.target.reset();
     })
     .catch(err => {
       errNotify(err);
-      refs.loader.style.display = 'none';
+      hideLoader();
       e.target.reset();
     });
 }
